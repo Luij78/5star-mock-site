@@ -1,0 +1,137 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>5 Star Building Inspections — Book Online (DEMO)</title>
+<style>
+:root{--n:#0d2b4e;--a:#f5a524;--g:#1f9d55;--bg:#f4f6f9;--b:#dfe4ea}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:#1c2430}
+.demo{background:#b42318;color:#fff;text-align:center;font-size:13px;padding:6px}
+header{background:var(--n);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+header h1{margin:0;font-size:20px}header h1 span{color:var(--a)}header a{color:#fff;text-decoration:none;font-weight:600}
+.wrap{max-width:1150px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 320px;gap:16px}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}#cart{order:-1;position:static!important}}
+.card{background:#fff;border:1px solid var(--b);border-radius:12px;padding:18px}
+.steps{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}.steps div{flex:1;min-width:70px;font-size:12px;text-align:center;padding:6px 2px;border-radius:6px;background:#e6ebf1;color:#556}
+.steps .on{background:var(--n);color:#fff}.steps .done{background:#cfe9da;color:#165}
+label{display:block;font-size:14px;font-weight:600;margin:10px 0 4px}input[type=text],input[type=number],input[type=email],input[type=tel]{width:100%;padding:10px;border:1px solid var(--b);border-radius:8px;font-size:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:500px){.row{grid-template-columns:1fr}}
+button{background:var(--n);color:#fff;border:0;border-radius:8px;padding:11px 18px;font-size:15px;font-weight:600;cursor:pointer}button.sec{background:#e6ebf1;color:var(--n)}button:disabled{opacity:.45;cursor:not-allowed}
+.nav{display:flex;justify-content:space-between;margin-top:18px;gap:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid var(--b);text-align:left}tr.hl{background:#fff4dc;font-weight:700}
+.tag{font-size:11px;background:#fff4dc;color:#8a5a00;border-radius:4px;padding:1px 6px;font-weight:600}
+.svc{display:flex;gap:10px;border:1px solid var(--b);border-radius:10px;padding:10px;margin:8px 0;cursor:pointer}.svc input{margin-top:4px;width:20px;height:20px}.svc.sel{border-color:var(--n);background:#f0f5fb}
+.svc .p{margin-left:auto;font-weight:700;white-space:nowrap}.svc small{color:#667}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.cal .h{font-size:12px;color:#667}
+.cal button{padding:9px 0;font-size:14px;background:#eaf6ef;color:#165;border:1px solid #bfe3cd}.cal button:disabled{background:#f1f1f1;color:#aaa;border-color:#eee}.cal button.pick{background:var(--g);color:#fff}
+.slots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.slots button{background:#fff;color:var(--n);border:1px solid var(--n);padding:8px 12px}.slots button.pick{background:var(--n);color:#fff}.slots button:disabled{text-decoration:line-through;border-color:#ccc;color:#aaa}
+.note{font-size:13px;background:#eef4fb;border-left:4px solid var(--n);padding:8px 10px;border-radius:6px;margin:10px 0}.warn{background:#fff4dc;border-color:var(--a)}
+#cart{position:sticky;top:12px;align-self:start}#cart .tot{font-size:22px;font-weight:800;color:var(--n)}.li{display:flex;justify-content:space-between;font-size:14px;padding:4px 0}
+.hide{display:none}.ok{color:var(--g);font-size:40px}.err{color:#b42318;font-size:13px}
+footer{text-align:center;font-size:12px;color:#667;padding:20px}
+</style></head><body>
+<div class="demo">⚠ DEMO — not a real booking site. Prices are competitor-based medians, not 5 Star's. No payments are processed.</div>
+<header><h1>★★★★★ <span>5 Star</span> Building Inspections</h1><a href="tel:4075677780">📞 407-567-7780</a><div style="width:100%;font-size:13px;opacity:.85">Serving Orlando &amp; Central Florida · Book your inspection online</div></header>
+<div class="wrap"><main class="card">
+<div class="steps" id="steps"></div>
+<!-- 0 property -->
+<section data-s="0"><h2>Property</h2>
+<label>Property address</label><input type="text" id="addr" placeholder="123 Main St, Orlando, FL 32801">
+<div class="row"><div><label>Square footage (under air)</label><input type="number" id="sqft" min="300" placeholder="e.g. 2200"></div><div><label>Year built (optional)</label><input type="number" id="yr" placeholder="e.g. 1998"></div></div>
+<div class="err" id="e0"></div>
+<h3>Home inspection pricing by size <span class="tag">competitor medians</span></h3><div class="note" style="font-size:12px">Pricing based on medians of published Central Florida competitor prices (Oct 2026); not 5 Star's actual prices. Homes over 4,500 sq ft: call for quote.</div>
+<table id="ptab"><tr><th>Square feet</th><th>Home inspection</th><th>Est. time</th></tr></table>
+</section>
+<!-- 1 services -->
+<section data-s="1" class="hide"><h2>Choose services</h2><div class="note">Pricing based on medians of published Central Florida competitor prices (Oct 2026); not 5 Star's actual prices. Add-on prices are the rate when added to a home inspection. Items marked "sample" had no published competitor price.</div><div id="svcs"></div><div class="err" id="e1"></div></section>
+<!-- 2 date -->
+<section data-s="2" class="hide"><h2>Date &amp; time</h2><div id="dur" class="note"></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><button class="sec" id="pm">‹</button><b id="mlab"></b><button class="sec" id="nm">›</button></div>
+<div class="cal" id="cal"></div><div class="slots" id="slots"></div><div class="err" id="e2"></div>
+<h3>📅 Calendar sync (iCal)</h3>
+<div class="row"><div><label>Import calendar (.ics) — blocks busy times</label><input type="file" id="ics" accept=".ics,text/calendar"></div><div><label>Subscribe / export</label><button class="sec" id="exp" type="button">⬇ Export .ics of booked slots</button></div></div>
+<div id="icsmsg" class="err" style="color:var(--g)"></div>
+<div class="note">How sync works: in production, this calendar would be a live two-way CalDAV/iCal feed (e.g. Cal.com or Google Calendar) — inspector busy times block slots here, and new bookings appear on the inspector's calendar instantly. This demo simulates it in your browser (localStorage): imported events block times, and the export includes all booked slots plus your booking.</div>
+</section>
+<!-- 3 info -->
+<section data-s="3" class="hide"><h2>Your info</h2>
+<label>Full name</label><input type="text" id="nm1"><div class="row"><div><label>Phone</label><input type="tel" id="ph" placeholder="(407) 555-0123"></div><div><label>Email (your report is sent here)</label><input type="email" id="em"></div></div>
+<div class="note">Your inspection report is delivered by email, so please use an address you check.</div><div class="err" id="e3"></div></section>
+<!-- 4 review -->
+<section data-s="4" class="hide"><h2>Review</h2><div id="rev"></div></section>
+<!-- 5 checkout -->
+<section data-s="5" class="hide"><h2>Checkout</h2><div class="note warn"><b>Mock payment form.</b> Nothing is charged, sent, or stored — this is a demo.</div>
+<label>Card number</label><input type="text" id="cc" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="off">
+<div class="row"><div><label>Expiry (MM/YY)</label><input type="text" id="ex" placeholder="12/28" autocomplete="off"></div><div class="row"><div><label>CVC</label><input type="text" id="cv" placeholder="123" autocomplete="off"></div><div><label>ZIP</label><input type="text" id="zp" placeholder="32801" autocomplete="off"></div></div></div>
+<h3>Policies</h3><ul style="font-size:14px"><li>Please give at least <b>48 hours' notice</b> to cancel or reschedule, as a courtesy.</li><li>Cancelling within <b>24 hours</b> of the inspection carries a <b>$75 charge</b>.</li><li>Your report is released after payment is received and the inspection agreement is signed.</li><li>Includes a 90-day limited structural &amp; mechanical warranty through InterNACHI.</li></ul>
+<label style="font-weight:400"><input type="checkbox" id="agree"> I have read and agree to the inspection agreement and policies above.</label><div class="err" id="e5"></div></section>
+<!-- 6 confirm -->
+<section data-s="6" class="hide" style="text-align:center"><div class="ok">✔</div><h2>You're booked! (demo)</h2><p>Booking #<b id="bn"></b></p><div id="conf"></div><p><button id="addcal" type="button">📅 Add to calendar (.ics)</button></p><p class="note">Demo only — no inspection was scheduled and no payment was processed. Call 407-567-7780 to book for real.</p><button class="sec" onclick="location.reload()">Start over</button></section>
+<div class="nav" id="nav"><button class="sec" id="back">Back</button><button id="next">Continue</button></div>
+</main>
+<aside class="card" id="cart"><h3 style="margin-top:0">Your inspection</h3><div id="cl"></div><hr><div class="li"><span>Total</span><span class="tot" id="ct">$0</span></div><div style="font-size:12px;color:#667">Competitor-median pricing (Oct 2026) · not 5 Star's actual prices · demo</div></aside></div>
+<footer>Mock site built for demo purposes, modeled on 5 Star Building Inspections, Orlando FL. Not affiliated booking system.</footer>
+<script>
+const TIERS=[[1500,380],[2500,383],[3500,495],[4500,575]];
+const SV=[
+{id:'home',n:'General home inspection',d:'Full top-to-bottom inspection: roof, structure, electrical, plumbing, HVAC, appliances. Includes 90-day warranty.',p:s=>tier(s)[1],m:0,req:1},
+{id:'wind',n:'Wind mitigation',d:'OIR-B1-1802 form that can lower your homeowners insurance premium.',p:()=>100,m:0},
+{id:'four',n:'4-point inspection',d:'Roof, electrical, plumbing, HVAC — often required by insurers for older homes.',p:()=>100,m:0},
+{id:'wdo',n:'Termite / WDO',d:'Wood-destroying organism inspection (FDACS-13645 form).',p:()=>123,m:10},
+{id:'pool',n:'Pool / spa',d:'Pump, filter, heater, surfaces, safety barriers.',p:()=>113,m:10},
+{id:'sewer',n:'Sewer scope',d:'Camera inspection of the main sewer line for breaks, roots and bellies.',p:()=>250,m:30},
+{id:'radon',n:'Radon test (sample price)',sample:1,d:'48-hour continuous radon monitor.',p:()=>150,m:10},
+{id:'mold',n:'Mold / air quality',d:'Indoor and outdoor air samples, lab analysis.',p:()=>250,m:20},
+{id:'roof',n:'Roof certification',d:'Roof condition and remaining-life certification for insurance.',p:()=>200,m:0}];
+const fmt=n=>'$'+n.toLocaleString();
+function tier(s){for(const t of TIERS)if(s<=t[0])return t;return[1e9,null]}
+// Inspection length per Clara v14 rules: <2,000 sq ft 60-80 min; 2,000-3,500 80-120; 3,500-5,000 2-2.5 h; >5,000 2.5 h + 25 min per extra 1,000; insurance-only 45-60. Upper bound, rounded up to 60/90/120/150/180, max 180.
+function claraBase(s){if(s<2000)return 80;if(s<=3500)return 120;if(s<=5000)return 150;return 150+25*Math.ceil((s-5000)/1000)}
+const r30=m=>Math.min(180,Math.max(60,Math.ceil(m/30)*30));
+const st={step:0,sel:new Set(['home']),date:null,time:null,mo:new Date(new Date().getFullYear(),new Date().getMonth(),1)};
+const $=i=>document.getElementById(i);const LS='5star_demo_busy';
+let busy=JSON.parse(localStorage.getItem(LS)||'[]');
+// seed pre-booked slots
+(function(){const t=new Date();for(let i=1;i<30;i+=3){const d=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i,9);busy.push({s:+d,e:+d+2*36e5,t:'Booked inspection',seed:1});const d2=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i+1,13);busy.push({s:+d2,e:+d2+3*36e5,t:'Booked inspection',seed:1})}})();
+function sqft(){return +$('sqft').value||0}
+function minutes(){const s=sqft();if(!st.sel.has('home')||!s)return 60;let m=claraBase(s);for(const v of SV)if(st.sel.has(v.id))m+=v.m;return r30(m)}
+function lines(){const s=sqft(),L=[];for(const v of SV)if(st.sel.has(v.id)){const p=v.p(s);L.push([v.n,p])}return L}
+function totals(){const L=lines();if(L.some(l=>l[1]==null))return{L,sub:null};let sub=L.reduce((a,l)=>a+l[1],0),disc=0;return{L,sub,disc,tot:sub-disc}}
+function renderTable(){const s=sqft();let h='<tr><th>Square feet</th><th>Home inspection</th><th>Est. time</th></tr>',lo=0;for(const t of TIERS){h+=`<tr class="${s>lo&&s<=t[0]?'hl':''}"><td>${(lo+1).toLocaleString()} – ${t[0].toLocaleString()}</td><td>${fmt(t[1])}</td><td>${r30(claraBase(lo+1))===r30(claraBase(t[0]))?r30(claraBase(t[0])):r30(claraBase(lo+1))+'–'+r30(claraBase(t[0]))} min</td></tr>`;lo=t[0]}h+=`<tr class="${s>4500?'hl':''}"><td>4,500+</td><td>Call for quote</td><td>2.5 h+</td></tr>`;$('ptab').innerHTML=h}
+function renderSvcs(){const s=sqft();$('svcs').innerHTML=SV.map(v=>{const p=v.p(s);return`<label class="svc ${st.sel.has(v.id)?'sel':''}"><input type="checkbox" data-id="${v.id}" ${st.sel.has(v.id)?'checked':''}><div><b>${v.n}</b><br><small>${v.d}</small></div><span class="p">${p==null?'Call for quote':fmt(p)}</span></label>`}).join('');
+$('svcs').querySelectorAll('input').forEach(c=>c.onchange=()=>{c.checked?st.sel.add(c.dataset.id):st.sel.delete(c.dataset.id);st.time=null;renderSvcs();renderCart()})}
+function renderCart(){const t=totals();let h=$('addr').value?`<div style="font-size:13px;color:#556">${esc($('addr').value)}${sqft()?' · '+sqft().toLocaleString()+' sq ft':''}</div>`:'';h+=t.L.map(l=>`<div class="li"><span>${l[0]}</span><span>${l[1]==null?'Quote':fmt(l[1])}</span></div>`).join('')||'<i>No services yet</i>';if(t.disc)h+=`<div class="li" style="color:var(--g)"><span>Bundle discount (10%)</span><span>−${fmt(t.disc)}</span></div>`;if(st.date&&st.time!=null)h+=`<div class="li"><span>📅 ${when()}</span></div>`;$('cl').innerHTML=h;$('ct').textContent=t.sub==null?'Call for quote':fmt(t.tot)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function slotStart(){const d=new Date(st.date);d.setHours(Math.floor(st.time),st.time%1*60,0,0);return d}
+function when(){const d=slotStart();return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'})+' '+d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
+const HOURS=[8,9,10,11,12,13,14,15];
+function free(day,h){const s=new Date(day);s.setHours(Math.floor(h),h%1*60,0,0);const e=+s+minutes()*6e4;if(e>new Date(day).setHours(17,0,0,0))return false;if(+s<Date.now()+864e5)return false;return!busy.some(b=>+s<b.e&&e>b.s)}
+function renderCal(){const m=st.mo;$('mlab').textContent=m.toLocaleDateString(undefined,{month:'long',year:'numeric'});$('dur').innerHTML=`Estimated inspection length: <b>${minutes()} min</b> (based on ${sqft()?sqft().toLocaleString()+' sq ft':'insurance-only visit'} and selected add-ons). Green days have openings.`;
+let h='SMTWTFS'.split('').map(x=>`<div class="h">${x}</div>`).join('');for(let i=0;i<m.getDay();i++)h+='<div></div>';const n=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+for(let d=1;d<=n;d++){const day=new Date(m.getFullYear(),m.getMonth(),d);const ok=day.getDay()!==0&&HOURS.some(x=>free(day,x));h+=`<button type="button" data-d="${+day}" ${ok?'':'disabled'} class="${st.date==+day?'pick':''}">${d}</button>`}
+$('cal').innerHTML=h;$('cal').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.date=+b.dataset.d;st.time=null;renderCal();renderCart()});
+$('slots').innerHTML=st.date?HOURS.map(x=>`<button type="button" data-h="${x}" ${free(new Date(st.date),x)?'':'disabled'} class="${st.time===x?'pick':''}">${new Date(2000,0,1,x).toLocaleTimeString([], {hour:'numeric'})}</button>`).join(''):'<i>Pick a day to see times.</i>';
+$('slots').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.time=+b.dataset.h;renderCal();renderCart()})}
+$('pm').onclick=()=>{st.mo=new Date(st.mo.getFullYear(),st.mo.getMonth()-1,1);renderCal()};$('nm').onclick=()=>{st.mo=new Date(st.mo.getFullYear(),st.mo.getMonth()+1,1);renderCal()};
+// ICS
+function parseICS(txt){txt=txt.replace(/\r?\n[ \t]/g,'');const out=[];const re=/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g;let m;while(m=re.exec(txt)){const g=k=>{const r=new RegExp('^'+k+'[^:\\n]*:(.+)$','m').exec(m[1]);return r&&r[1].trim()};const s=pd(g('DTSTART')),e=pd(g('DTEND'))||(s&&+s+36e5);if(s)out.push({s:+s,e:+e,t:g('SUMMARY')||'Busy (imported)'})}return out}
+function pd(v){if(!v)return null;const r=/^(\d{4})(\d\d)(\d\d)(?:T(\d\d)(\d\d)(\d\d)?(Z)?)?/.exec(v);if(!r)return null;const a=[+r[1],r[2]-1,+r[3],+(r[4]||0),+(r[5]||0),+(r[6]||0)];if(!r[4]){return new Date(a[0],a[1],a[2])}return r[7]?new Date(Date.UTC(...a)):new Date(...a)}
+$('ics').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const ev=parseICS(t);ev.forEach(x=>{if(x.e-x.s>=864e5-1)x.e=x.s+864e5});busy.push(...ev);localStorage.setItem(LS,JSON.stringify(busy.filter(b=>!b.seed)));$('icsmsg').textContent=`Imported ${ev.length} event(s); those times are now blocked.`;renderCal()})};
+function ic(d){return new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'')}
+function buildICS(onlyMine){const ev=[];if(!onlyMine)busy.forEach((b,i)=>ev.push([b.s,b.e,b.t||'Booked',`busy${i}-${b.s}@5star-demo`]));if(st.date&&st.time!=null){const s=+slotStart();ev.push([s,s+minutes()*6e4,'5 Star Home Inspection (DEMO) – '+($('addr').value||''),`booking-${st.bn||'pending'}@5star-demo`])}
+const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//5 Star Building Inspections//Demo//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH'];ev.forEach(e=>L.push('BEGIN:VEVENT','UID:'+e[3],'DTSTAMP:'+ic(Date.now()),'DTSTART:'+ic(e[0]),'DTEND:'+ic(e[1]),'SUMMARY:'+String(e[2]).replace(/([,;\\])/g,'\\$1').replace(/\n/g,' '),'END:VEVENT'));L.push('END:VCALENDAR');return L.join('\r\n')}
+function dl(name,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/calendar'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+$('exp').onclick=()=>dl('5star-booked-slots.ics',buildICS(false));$('addcal').onclick=()=>dl('5star-inspection.ics',buildICS(true));
+// steps
+const NAMES=['Property','Services','Date & time','Your info','Review','Checkout','Done'];
+function valid(){const s=st.step;let e='';
+if(s==0){if($('addr').value.trim().length<8)e='Enter the full property address.';else if(sqft()<300)e='Enter the approximate square footage.'}
+if(s==1){if(!st.sel.size)e='Pick at least one service.';else if(totals().sub==null)e='Homes over 4,500 sq ft need a custom quote — call 407-567-7780.'}
+if(s==2&&(st.date==null||st.time==null))e='Pick a day and a time.';
+if(s==3){if($('nm1').value.trim().length<2)e='Enter your name.';else if($('ph').value.replace(/\D/g,'').length<10)e='Enter a 10-digit phone number.';else if(!/^\S+@\S+\.\S+$/.test($('em').value))e='Enter a valid email — your report is sent there.'}
+if(s==5){const cc=$('cc').value.replace(/\D/g,'');if(cc.length<13)e='Enter a card number (any test number, e.g. 4242 4242 4242 4242).';else if(!/^\d\d\/\d\d$/.test($('ex').value.trim()))e='Expiry as MM/YY.';else if(!/^\d{3,4}$/.test($('cv').value.trim()))e='Enter CVC.';else if(!/^\d{5}$/.test($('zp').value.trim()))e='Enter 5-digit ZIP.';else if(!$('agree').checked)e='Please agree to the inspection agreement.'}
+const el=$('e'+s);if(el)el.textContent=e;return!e}
+function show(){document.querySelectorAll('section').forEach(x=>x.classList.toggle('hide',+x.dataset.s!==st.step));$('steps').innerHTML=NAMES.map((n,i)=>`<div class="${i==st.step?'on':i<st.step?'done':''}">${n}</div>`).join('');$('back').style.visibility=st.step&&st.step<6?'visible':'hidden';$('nav').style.display=st.step==6?'none':'flex';$('next').textContent=st.step==5?'Pay & book (demo)':st.step==4?'Proceed to checkout':'Continue';
+if(st.step==1)renderSvcs();if(st.step==2){renderCal();for(let k=0;k<3&&!$('cal').querySelector('button:not([disabled])');k++){st.mo=new Date(st.mo.getFullYear(),st.mo.getMonth()+1,1);renderCal()}}if(st.step==4){const t=totals();$('rev').innerHTML=`<table><tr><td>Property</td><td>${esc($('addr').value)} · ${sqft().toLocaleString()} sq ft${$('yr').value?' · built '+esc($('yr').value):''}</td></tr><tr><td>When</td><td>${when()} (${minutes()} min)</td></tr><tr><td>Name</td><td>${esc($('nm1').value)}</td></tr><tr><td>Phone</td><td>${esc($('ph').value)}</td></tr><tr><td>Report email</td><td>${esc($('em').value)}</td></tr>${t.L.map(l=>`<tr><td>${l[0]}</td><td>${fmt(l[1])}</td></tr>`).join('')}${t.disc?`<tr><td>Bundle discount</td><td>−${fmt(t.disc)}</td></tr>`:''}<tr class="hl"><td>Total</td><td>${fmt(t.tot)}</td></tr></table>`}window.scrollTo(0,0)}
+$('next').onclick=()=>{if(!valid())return;if(st.step==5){st.bn='5S-'+Math.random().toString(36).slice(2,8).toUpperCase();const s=+slotStart();busy.push({s,e:s+minutes()*6e4,t:'Booked inspection'});localStorage.setItem(LS,JSON.stringify(busy.filter(b=>!b.seed)));['cc','ex','cv','zp'].forEach(i=>$(i).value='');$('bn').textContent=st.bn;$('conf').innerHTML=`<p><b>${when()}</b> · ${esc($('addr').value)}</p><p>Your report will be emailed to <b>${esc($('em').value)}</b> after payment and the signed agreement.</p>`}st.step++;show()};
+$('back').onclick=()=>{st.step--;show()};
+['addr','sqft'].forEach(i=>$(i).oninput=()=>{renderTable();renderCart()});
+renderTable();renderCart();show();
+</script></body></html>
